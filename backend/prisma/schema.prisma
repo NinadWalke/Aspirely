@@ -1,0 +1,185 @@
+// =============================================
+// ===============  Aspirely Schema  ============
+// =============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================
+// ENUMS
+// =============================================
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ProgressCategory {
+  FITNESS
+  TASKS
+  NOTES
+  MEDITATION
+}
+
+// =============================================
+// MODELS
+// =============================================
+
+// ---------------------
+// User
+// ---------------------
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  profileImage String? // optional Cloudinary URL
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  tasks          Task[]
+  notes          Note[]
+  workouts       Workout[]
+  meditationLogs MeditationLog[]
+  progress       ProgressRecord[]
+  messages       Message[]
+  chatRooms      ChatRoom[]       @relation("UserChatRooms")
+
+  // Self relation (friendship)
+  sentRequests     Friendship[] @relation("SentFriendRequests")
+  receivedRequests Friendship[] @relation("ReceivedFriendRequests")
+}
+
+// ---------------------
+// Task
+// ---------------------
+model Task {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  completed   Boolean      @default(false)
+  dueDate     DateTime?
+  createdAt   DateTime     @default(now())
+
+  // Relation
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// ---------------------
+// Note
+// ---------------------
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  tags      String[]
+  createdAt DateTime @default(now())
+
+  // Relation
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// ---------------------
+// Workout
+// ---------------------
+model Workout {
+  id       String   @id @default(uuid())
+  type     String
+  duration Int
+  calories Int
+  date     DateTime @default(now())
+
+  // Relation
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// ---------------------
+// MeditationLog
+// ---------------------
+model MeditationLog {
+  id         String   @id @default(uuid())
+  duration   Int
+  moodBefore String?
+  moodAfter  String?
+  date       DateTime @default(now())
+
+  // Relation
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// ---------------------
+// ProgressRecord
+// ---------------------
+model ProgressRecord {
+  id            String           @id @default(uuid())
+  category      ProgressCategory
+  progressValue Float
+  recordedAt    DateTime         @default(now())
+
+  // Relation
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// ---------------------
+// Friendship (Self Relation)
+// ---------------------
+model Friendship {
+  id        String           @id @default(uuid())
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+
+  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id])
+  requesterId String
+
+  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  receiverId String
+}
+
+// ---------------------
+// ChatRoom
+// ---------------------
+model ChatRoom {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  // Relations
+  users    User[]    @relation("UserChatRooms")
+  messages Message[]
+}
+
+// ---------------------
+// Message
+// ---------------------
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  sender   User   @relation(fields: [senderId], references: [id])
+  senderId String
+
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String
+}
