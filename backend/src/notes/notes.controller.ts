@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { NotesService } from './notes.service';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('notes')
 export class NotesController {
     constructor(private notesService: NotesService) {}

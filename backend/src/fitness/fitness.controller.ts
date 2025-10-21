@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { FitnessService } from './fitness.service';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('fitness')
 export class FitnessController {
   constructor(private fitnessService: FitnessService) {}
