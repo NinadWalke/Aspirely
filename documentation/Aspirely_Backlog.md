@@ -2,6 +2,22 @@
 
 ---
 
+## Documentation
+
+---
+
+### 1. Create Prisma Integration MD
+
+- All steps from `npx prisma init` to `npx prisma studio` must be included in it.
+- Prisma installation must also be accompanied by Postgres installation and server setup.
+
+### 2. Create a JWT & @nestjs/passport authentication workflow MD
+
+- All steps from `npm i xyz` to `async validate()...` must be covered in NestJS.
+- Secret creation, .env config must also be included `[dotenv -cli]`.
+
+---
+
 ## Frontend
 
 ---
