@@ -74,4 +74,16 @@ nest g controller social --no-spec
 nest g service social --no-spec
 ```
 
+### 3. Adding a 'IsOwner' guard to every Controller
+
+- Currently, all the controllers are committing to requests just on the basis of Authentication.
+- There is a possibility of another user, logged in, making requests to another users data. We can block that by
+
+```javascript
+...(@GetUser() id: User) {
+    if(id == task.user.id || progress.user.id) // do operations
+    else return {statusCode: 401, message: "Unauthorized"};
+} 
+```
+
 ---

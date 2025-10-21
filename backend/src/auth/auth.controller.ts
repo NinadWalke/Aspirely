@@ -2,14 +2,17 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, SignUpDto } from './dto';
 import { JwtGuard } from './guard';
-import type { User } from '@prisma/client';
 import { GetUser } from './decorator';
+
+import type { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @UseGuards(JwtGuard)
   @Get()
-  isAuthenticated(@GetUser() user: User) {
+  async isAuthenticated(@GetUser() user: User) {
     if (user) return { isAuth: true, user: user };
     return { isAuth: false };
   }
@@ -24,7 +27,7 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @Get('profile')
   getUserProfile() {
-    return {profile: 'These are the user profile details'};
+    return { profile: 'These are the user profile details' };
   }
   @Post('forgot-username')
   sendUsernameToEmail() {
