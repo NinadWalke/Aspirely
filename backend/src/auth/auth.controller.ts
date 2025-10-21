@@ -5,11 +5,11 @@ import { LoginDto, SignUpDto } from './dto';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @Get('check')
+  @Get()  
   isAuthenticated() {
     return { isAuth: this.authService.isUserAuthenticated() };
   }
-  @Post('signup')
+  @Post('register')
   signup(@Body() dto: SignUpDto) {
     return this.authService.signUserUp(dto);
   }
@@ -17,4 +17,20 @@ export class AuthController {
   login(@Body() dto: LoginDto) {
     return this.authService.logUserIn(dto);
   }
+  @Get('profile')
+  getUserProfile() {
+    return '';
+  } 
+  @Post('forgot-username')
+  sendUsernameToEmail() {
+    return '';
+  } 
+  @Post('forgot-password')
+  sendPasswordResetInstructions() {
+    return '';
+  } 
+  @Post('reset-password')
+  resetThePasswordAfterVerifyingToken() {
+    return '';
+  } 
 }
