@@ -77,7 +77,7 @@ model Task {
   createdAt   DateTime     @default(now())
 
   // Relation
-  user   User   @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -92,7 +92,7 @@ model Note {
   createdAt DateTime @default(now())
 
   // Relation
-  user   User   @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -107,7 +107,7 @@ model Workout {
   date     DateTime @default(now())
 
   // Relation
-  user   User   @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -122,7 +122,7 @@ model MeditationLog {
   date       DateTime @default(now())
 
   // Relation
-  user   User   @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -136,7 +136,7 @@ model ProgressRecord {
   recordedAt    DateTime         @default(now())
 
   // Relation
-  user   User   @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -148,10 +148,10 @@ model Friendship {
   status    FriendshipStatus @default(PENDING)
   createdAt DateTime         @default(now())
 
-  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id])
+  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
   requesterId String
 
-  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
   receiverId String
 }
 

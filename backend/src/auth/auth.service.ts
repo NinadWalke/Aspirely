@@ -75,9 +75,7 @@ export class AuthService {
       // verify the password
       const passValid = await argon.verify(existingUser.password, dto.password);
       if (!passValid) throw new ForbiddenException('Credentials invalid');
-      // sign user in
-      console.log(`User ${existingUser.email} has logged in successfully!`);
-      // return the new user
+      // return the new user [confirmed login]
       const safeUser = {
         id: existingUser.id,
         email: existingUser.email,
@@ -98,7 +96,7 @@ export class AuthService {
   signToken(userId: string, email: string, name: string): Promise<string> {
     const payload = { sub: userId, email, name };
     return this.jwt.signAsync(payload, {
-      expiresIn: '15min',
+      expiresIn: '1d',
       secret: this.config.get('JWT_SECRET'),
     });
   }
