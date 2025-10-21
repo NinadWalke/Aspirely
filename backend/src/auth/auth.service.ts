@@ -9,6 +9,10 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginDto, SignUpDto } from './dto';
 import * as argon from 'argon2';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import type { User } from '@prisma/client';
+import { GetUser } from './decorator';
 
 // -- Types of Exceptions --
 // Exception	HTTP Status
@@ -21,10 +25,11 @@ import * as argon from 'argon2';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
-  isUserAuthenticated() {
-    return false;
-  }
+  constructor(
+    private config: ConfigService,
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {} // import JwtService as jwt to help us access async signing of tokens
   async signUserUp(dto: SignUpDto) {
     try {
       // generate password hash
@@ -79,7 +84,7 @@ export class AuthService {
         name: existingUser.name,
         createdAt: existingUser.createdAt,
       };
-      return { message: 'Login successful!', user: safeUser };
+      return this.signToken(safeUser.id, safeUser.email, safeUser.name);
     } catch (error) {
       if (error instanceof HttpException) throw error;
 
@@ -88,5 +93,13 @@ export class AuthService {
         'Something went wrong during login',
       );
     }
+  }
+  // helper function to sign tokens
+  signToken(userId: string, email: string, name: string): Promise<string> {
+    const payload = { sub: userId, email, name };
+    return this.jwt.signAsync(payload, {
+      expiresIn: '15min',
+      secret: this.config.get('JWT_SECRET'),
+    });
   }
 }

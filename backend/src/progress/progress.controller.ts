@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { ProgressService } from './progress.service';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('progress')
 export class ProgressController {
   constructor(private progressService: ProgressService) {}
