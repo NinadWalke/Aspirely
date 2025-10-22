@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Note" ALTER COLUMN "tags" SET DEFAULT ARRAY[]::TEXT[];
