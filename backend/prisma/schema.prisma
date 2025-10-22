@@ -45,6 +45,8 @@ model User {
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
+  username     String   @unique
+  dob          DateTime
   password     String
   profileImage String? // optional Cloudinary URL
   createdAt    DateTime @default(now())
@@ -77,7 +79,7 @@ model Task {
   createdAt   DateTime     @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -88,11 +90,11 @@ model Note {
   id        String   @id @default(uuid())
   title     String
   content   String
-  tags      String[]
+  tags      String[] @default([])
   createdAt DateTime @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -107,7 +109,7 @@ model Workout {
   date     DateTime @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -122,7 +124,7 @@ model MeditationLog {
   date       DateTime @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -136,7 +138,7 @@ model ProgressRecord {
   recordedAt    DateTime         @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 

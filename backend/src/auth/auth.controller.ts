@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, SignUpDto } from './dto';
+import { ForgotDto, LoginDto, ProfileDto, SignUpDto } from './dto';
 import { JwtGuard } from './guard';
 import { GetUser } from './decorator';
 
@@ -21,24 +21,34 @@ export class AuthController {
     return this.authService.signUserUp(dto);
   }
   @Post('login')
-  login(@Body() dto: LoginDto) {
-    return this.authService.logUserIn(dto);
+  async login(@Body() dto: LoginDto) {
+    return { accessToken: await this.authService.logUserIn(dto) };
   }
   @UseGuards(JwtGuard)
   @Get('profile')
-  getUserProfile() {
-    return { profile: 'These are the user profile details' };
+  getUserProfile(@GetUser() user: User) {
+    return this.authService.getCurrentUser(user.id);
+  }
+  @UseGuards(JwtGuard)
+  @Put('profile')
+  updateUserProfile(@GetUser() user: User, @Body() dto: ProfileDto) {
+    return this.authService.updateUserProfile(user.id, dto);
+  }
+  @UseGuards(JwtGuard)
+  @Get('profile/:id')
+  getAnotherUserProfile(@Param('id') id: string) {
+    return this.authService.getAnotherUserProfile(id);
   }
   @Post('forgot-username')
-  sendUsernameToEmail() {
-    return '';
+  sendUsernameToEmail(@Body() dto: ForgotDto) {
+    return this.authService.sendUsernameToEmail(dto);
   }
   @Post('forgot-password')
-  sendPasswordResetInstructions() {
-    return '';
+  sendPasswordResetInstructions(@Body() dto: ForgotDto) {
+    return this.authService.sendPasswordResetToEmail(dto);
   }
   @Post('reset-password')
   resetThePasswordAfterVerifyingToken() {
-    return '';
+    return this.authService.resetThePasswordAfterVerifyingToken();
   }
 }

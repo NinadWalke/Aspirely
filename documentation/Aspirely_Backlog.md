@@ -86,4 +86,19 @@ nest g service social --no-spec
 } 
 ```
 
+### 4. Validating unique constraints like 'email already registered' or 'username already taken'
+
+- Currently, no such feature for the above function is in place. Therefore, an implementation is must.
+- We can create a seperate function to act as a validator or any other desired methodlogy. This part comes under the finishing touches of Aspirely.
+
+### 5. Build public guards
+
+- Currently, an authenticated user can also send a request to a public route like `/auth/login` or `/auth/forgot-email`.
+- We protect the routes using a new guard `@UseGuards(..., PublicGuard)`
+
+### 6. Implement Nodemailer for Forgot-Pass and Forgot-Username & Implement them
+
+- No mails being sent right now. We'll be sending the main to `user.email`.
+- Token verification and real-time handling missing. We'll be doing that as polishing.
+
 ---
