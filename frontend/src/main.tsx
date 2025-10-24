@@ -3,6 +3,9 @@ import "./index.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 
 // -- Imports --
+// Security
+import ProtectedRoute from "./helpers/ProtectedRoute";
+
 // Common
 import PublicNav from "./pages/public/common/PublicNav";
 import DashNav from "./pages/dashboard/common/DashNav";
@@ -39,7 +42,15 @@ const Layout = () => {
         {/* User */}
         <Route path={"/profile"} element={<Profile />} />
         {/* Dashboard & Features */}
-        <Route path="/dashboard" element={<DashboardLanding />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLanding />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/dashboard/task" element={<Task />} />
         <Route path="/dashboard/notes" element={<Notes />} />
         <Route path="/dashboard/meditation" element={<Meditation />} />

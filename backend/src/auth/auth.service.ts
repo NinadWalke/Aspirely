@@ -88,7 +88,7 @@ export class AuthService {
         name: existingUser.name,
         createdAt: existingUser.createdAt,
       };
-      return this.signToken(safeUser.id, safeUser.email, safeUser.name);
+      return {access_toke: this.signToken(safeUser.id, safeUser.email, safeUser.name), user: safeUser};
     } catch (error) {
       if (error instanceof HttpException) throw error;
 
