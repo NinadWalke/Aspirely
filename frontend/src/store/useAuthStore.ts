@@ -39,9 +39,8 @@ export const useAuthState = create<AuthState>()(
         // check if current user is authenticated
         const token = get().jwtToken;
         if (!token) return get().logout();
-
         try {
-          const { data } = await api.get<AuthResponse>("/auth");
+          const { data } = await api.get<AuthResponse>("/auth"); // call the get /auth with headers from api.ts (localStorage)
           if (data.isAuth) {
             set({ user: data.user });
           } else {
@@ -57,7 +56,7 @@ export const useAuthState = create<AuthState>()(
       // we have the user && the token
     }),
     {
-      name: "auth-storage",
+      name: "auth-storage",  // name in localStorage
     }
   )
 );

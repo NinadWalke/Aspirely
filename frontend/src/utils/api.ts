@@ -21,7 +21,7 @@ export const api: AxiosInstance = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const jwtToken = useAuthState((state) => state.jwtToken);
+    const jwtToken = useAuthState.getState().jwtToken; // hook calls can only be done in React components. Therefore, we use .getState() from Zustand    
     if (jwtToken && config.headers) {
       config.headers["Authorization"] = `Bearer ${jwtToken}`;
     }

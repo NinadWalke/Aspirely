@@ -16,36 +16,33 @@
 - All steps from `npm i xyz` to `async validate()...` must be covered in NestJS.
 - Secret creation, .env config must also be included `[dotenv -cli]`.
 
+### 3. Create a Zustand & @nestjs/config authentication workflow for Auth
+
+- All steps from `npm i zustand` to `app.enableCors()` must be covered in React & Nest.
+- Secret storage, localStorage spectatorship must be demonstrated in the docs.
+
 ---
 
 ## Frontend
 
 ---
 
-### 1. Create React Routes
+### 1. Configure \<PublicRoute/> component
 
-- Implement react-router-dom under `main.jsx`
-- Stage all member files for required pages
-- Stage `apiConfig.js` by abstracting `axios`
+- Currently we have installed the Protected Route component, but after testing we'll need to protect the public routes from logged in users.
+- We'll be implementing it the same way, where if the user is LOGGED IN then we redirect them to the protected pages eg. profile.
 
-### 2. Configure CORS
+### 2. Initialize \<Spinner/> component
 
-- Configure cors based on the backend and frontend domains.
+- Currently Spinner.tsx is absent. Simply initialize it for smooth waiting durations.
 
-```markdown
-http://localhost:3000  --> backend
-http://localhost:5173  --> frontend
-```
+### 3. Pagination component
 
-### 3. Validate and stage LocalStorage for JWT configuration and easy retrieval
+- Demonstration of Pagination would allow a better presentation of the project as well as easier retrieval of progress reports, meditation logs, etc.
 
-- Configure localStorage at `/login` route for ease of JWT storage.
-- Syntax:
+### 4. Proper pages for NotFound.tsx and Error.tsx
 
-```javascript
-localStorage.setItem('Authorization',  `Bearer ${token}`);
-localStorage.getItem('Authorization');
-```
+- Properly design the frontend for NotFound.tsx & Error.tsx so we have a professional looking Aspirely.
 
 ---
 
@@ -57,9 +54,7 @@ localStorage.getItem('Authorization');
 
 - DTOs are missing for the following modules:
     i) Fitness
-    ii) Meditation
-    iii) Notes
-    iv) Progress
+    ii) Progress
 - Updates to the following DTOs:
     i) Auth [Signup and Login]
     ii) Tasks [Just a temporary DTO]
@@ -96,7 +91,7 @@ nest g service social --no-spec
 - Currently, an authenticated user can also send a request to a public route like `/auth/login` or `/auth/forgot-email`.
 - We protect the routes using a new guard `@UseGuards(..., PublicGuard)`
 
-### 6. Implement Nodemailer for Forgot-Pass and Forgot-Username & Implement them
+### 6. Implement Nodemailer for OTP-Sign Up, Forgot-Pass and Forgot-Username & Implement them
 
 - No mails being sent right now. We'll be sending the main to `user.email`.
 - Token verification and real-time handling missing. We'll be doing that as polishing.

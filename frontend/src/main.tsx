@@ -33,27 +33,26 @@ const Layout = () => {
       {location.pathname.startsWith("/dashboard") ? <DashNav /> : <PublicNav />}
       <Routes>
         {/* Home */}
-        <Route path={"/"} element={<Home />} />
-        {/* Auth */}
-        <Route path={"/login"} element={<Login />} />
-        <Route path={"/signup"} element={<SignUp />} />
-        <Route path={"/forgot"} element={<Forgot />} />
-        <Route path={"*"} element={<NotFound />} />
-        {/* User */}
-        <Route path={"/profile"} element={<Profile />} />
-        {/* Dashboard & Features */}
+        <Route path="/" element={<Home />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardLanding />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/dashboard/task" element={<Task />} />
-        <Route path="/dashboard/notes" element={<Notes />} />
-        <Route path="/dashboard/meditation" element={<Meditation />} />
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot" element={<Forgot />} />
+
+        {/* User */}
+        <Route path="/profile" element={<Profile />} />
+
+        {/* Dashboard & Features - Protected */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLanding />} />
+          <Route path="/dashboard/task" element={<Task />} />
+          <Route path="/dashboard/notes" element={<Notes />} />
+          <Route path="/dashboard/meditation" element={<Meditation />} />
+        </Route>
+
+        {/* Catch-all */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

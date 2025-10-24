@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import type { ReactNode} from 'react'
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthState } from "../store";
 
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
-
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
   const { checkAuth, isLoggedIn } = useAuthState();
   const [loading, setLoading] = useState(true);
@@ -26,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (loading) return <p>Loading...</p>;
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
