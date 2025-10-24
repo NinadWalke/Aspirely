@@ -22,7 +22,7 @@ export class AuthController {
   }
   @Post('login')
   async login(@Body() dto: LoginDto) {
-    return { accessToken: await this.authService.logUserIn(dto) };
+    return await this.authService.logUserIn(dto);
   }
   @UseGuards(JwtGuard)
   @Get('profile')

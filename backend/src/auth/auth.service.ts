@@ -42,9 +42,9 @@ export class AuthService {
       // save the new user to database
       const newUser = await this.prisma.user.create({
         data: {
-          email: dto.email,
+          email: dto.email.toLowerCase(),
           dob: dto.dob,
-          username: dto.username,
+          username: dto.username.toLowerCase(),
           name: dto.name,
           password: password,
         },
@@ -73,7 +73,7 @@ export class AuthService {
     try {
       // check existing user
       const existingUser = await this.prisma.user.findUnique({
-        where: { username: dto.username },
+        where: { username: dto.username.toLowerCase() },
       });
       if (!existingUser) throw new ForbiddenException('Credentials invalid');
       // verify the password
@@ -82,13 +82,20 @@ export class AuthService {
       // return the new user [confirmed login]
       const safeUser = {
         id: existingUser.id,
-        userame: existingUser.username,
+        userame: existingUser.username.toLowerCase(),
         dob: existingUser.dob,
-        email: existingUser.email,
+        email: existingUser.email.toLowerCase(),
         name: existingUser.name,
         createdAt: existingUser.createdAt,
       };
-      return this.signToken(safeUser.id, safeUser.email, safeUser.name);
+      return {
+        jwtToken: await this.signToken(
+          safeUser.id,
+          safeUser.email,
+          safeUser.name,
+        ),
+        user: safeUser,
+      };
     } catch (error) {
       if (error instanceof HttpException) throw error;
 
@@ -124,17 +131,27 @@ export class AuthService {
     return safeUser;
   }
   async sendUsernameToEmail(dto: ForgotDto) {
-    const requiredUser = await this.prisma.user.findUnique(({where: {email: dto.email}}));
-    if(!requiredUser) return new NotFoundException('User does not exist');
-    return {status: 200, message: `Username: ${requiredUser.username} | Mail sent to ${dto.email}`}
+    const requiredUser = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (!requiredUser) return new NotFoundException('User does not exist');
+    return {
+      status: 200,
+      message: `Username: ${requiredUser.username} | Mail sent to ${dto.email}`,
+    };
   }
   async sendPasswordResetToEmail(dto: ForgotDto) {
-    const requiredUser = await this.prisma.user.findUnique(({where: {email: dto.email}}));
-    if(!requiredUser) return new NotFoundException('User does not exist');
-    return {status: 200, message: `Password reset instructions mailed to ${dto.email}`}
+    const requiredUser = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (!requiredUser) return new NotFoundException('User does not exist');
+    return {
+      status: 200,
+      message: `Password reset instructions mailed to ${dto.email}`,
+    };
   }
   async resetThePasswordAfterVerifyingToken() {
-    return {status: 200, message: `Password reset successful!`};
+    return { status: 200, message: `Password reset successful!` };
   }
   // helper function to sign tokens
   signToken(userId: string, email: string, name: string): Promise<string> {
