@@ -1,1 +1,4 @@
 Add: /tasks/:id => PATCH [Marking a task completed]
+Add: /auth => A lot of new route additions to the diagram
+
+-- Overall: Update the routing diagram after backend infra is complete --

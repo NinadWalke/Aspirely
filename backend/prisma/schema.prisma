@@ -118,10 +118,22 @@ model Workout {
 // ---------------------
 model MeditationLog {
   id         String   @id @default(uuid())
-  duration   Int
-  moodBefore String?
-  moodAfter  String?
-  date       DateTime @default(now())
+  
+  // Core session data
+  duration         Int       // in minutes
+  technique        String?   // e.g. "Mindfulness", "Breathing", "Body Scan"
+  guided           Boolean?  // true if guided meditation (vs silent)
+  source           String?   // e.g. "Headspace", "YouTube", "Custom"
+  date             DateTime  @default(now())
+
+  // Context and reflection
+  moodBefore       String?   // e.g. "Anxious", "Calm"
+  moodAfter        String?
+  stressLevelBefore Int?     
+  stressLevelAfter  Int?
+  notes            String?   // user’s reflection text (how they felt, what they noticed)
+  location         String?   // optional (home, outdoors, etc.)
+  tags             String[]  // ["morning", "mindfulness", "calm"]
 
   // Relation
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

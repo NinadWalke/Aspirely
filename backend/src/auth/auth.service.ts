@@ -100,7 +100,6 @@ export class AuthService {
   }
   async getCurrentUser(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    console.log(user);
     if (!user) throw new NotFoundException('User not found');
     const { password, ...safeUser } = user;
     return safeUser;
