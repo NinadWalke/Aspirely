@@ -96,4 +96,28 @@ nest g service social --no-spec
 - No mails being sent right now. We'll be sending the main to `user.email`.
 - Token verification and real-time handling missing. We'll be doing that as polishing.
 
+### 7. Implement Redis Caching for all middlewares and interceptors
+
+- Currently, we have just basic in-memory map cache storing data. But if we install load balancers and a few instances of the Aspirely backend, we might struggle with wrong assignment of servers.
+- A backhand Redis cache is the best option for properly assigning values over multiple balancers, introducing a production-grade infrastructure.
+- Backlog:
+    **i) Redis fundamentals**:
+        - Learn Redis core concepts (key-value storage, TTLs, persistence, eviction policies).
+        - Understand Redis data types: string, hash, set, sorted set.
+        - Learn basic Redis CLI commands: SET, GET, DEL, EXPIRE, SETEX, TTL.
+        - Learn how to connect Redis with NestJS (using @nestjs/cache-manager or ioredis).
+        - Implement Redis caching service to replace in-memory Map.
+    **ii) Cache Invalidation:**
+        - Learn what “cache invalidation” means in production.
+        - Implement TTL-based invalidation (already done conceptually, redo with Redis).
+        - Implement event-based invalidation → clear cache when related data changes (e.g. task created/deleted).
+        - Organize cache keys with prefixes/namespaces (e.g. tasks:GET-/tasks:userId).
+    **iii) Concurrency Control (Cache Stampede Prevention)**
+        - Learn caching patterns:
+        - Read-through cache (what you’re doing now)
+        - Write-through cache
+        - Write-around cache
+        - Decide which fits which module (e.g., tasks might use read-through, progress might use write-through).
+        - Learn when to cache vs. when not to cache (idempotent GETs, expensive queries, aggregated data)
+
 ---
