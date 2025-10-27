@@ -1,4 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+
+// modules
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
@@ -7,8 +9,10 @@ import { FitnessModule } from './fitness/fitness.module';
 import { NotesModule } from './notes/notes.module';
 import { MeditationModule } from './meditation/meditation.module';
 import { ProgressModule } from './progress/progress.module';
-import { LoggerMiddleware } from './core/middleware/logger.middleware';
-import { RateLimitMiddleware } from './core/middleware/rate-limit.middleware';
+
+// imports
+import { LoggerMiddleware } from './core/middleware';
+import { RateLimitMiddleware } from './core/middleware';
 
 @Module({
   imports: [

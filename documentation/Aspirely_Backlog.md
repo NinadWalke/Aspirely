@@ -69,7 +69,7 @@ nest g controller social --no-spec
 nest g service social --no-spec
 ```
 
-### 3. Adding a 'IsOwner' guard to every Controller
+### 3. Adding a 'IsOwner' guard to every Controller & Implementing Roles Guard
 
 - Currently, all the controllers are committing to requests just on the basis of Authentication.
 - There is a possibility of another user, logged in, making requests to another users data. We can block that by

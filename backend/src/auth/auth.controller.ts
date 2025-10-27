@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ForgotDto, LoginDto, ProfileDto, SignUpDto } from './dto';
-import { JwtGuard } from './guard';
-import { GetUser } from './decorator';
+import { JwtGuard, RolesGuard } from 'src/core/guard';
+import { GetUser, Roles } from 'src/core/decorator';
 
 import type { User } from '@prisma/client';
 

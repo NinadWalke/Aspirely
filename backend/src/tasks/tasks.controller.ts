@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { TaskDto } from './dto';
-import { JwtGuard } from 'src/auth/guard';
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/core/guard';
+import { GetUser } from 'src/core/decorator';
 
 // Prisma imports
 import type { User } from '@prisma/client';
@@ -63,9 +63,9 @@ export class TasksController {
     return updatedTask;
   }
   // delete /tasks/:id
-  @Delete(':id') 
+  @Delete(':id')
   async deleteATask(@Param('id') id: string) {
     const deletedTask = await this.tasksService.deleteUsersTask(id);
-    return {taskDeleted: true, deletedTask};
+    return { taskDeleted: true, deletedTask };
   }
 }
