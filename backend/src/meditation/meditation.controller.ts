@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { MeditationService } from './meditation.service';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from 'src/core/guard';
 import { EditMeditationDto, MeditationDto } from './dto';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from 'src/core/decorator';
 import type { User } from '@prisma/client';
 
 @UseGuards(JwtGuard)

@@ -11,8 +11,6 @@ import { ForgotDto, LoginDto, ProfileDto, SignUpDto } from './dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import type { User } from '@prisma/client';
-import { GetUser } from './decorator';
 
 // -- Types of Exceptions --
 // Exception	HTTP Status

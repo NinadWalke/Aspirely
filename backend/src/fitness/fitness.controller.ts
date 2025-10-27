@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { FitnessService } from './fitness.service';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from 'src/core/guard';
 
 @UseGuards(JwtGuard)
 @Controller('fitness')

@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ResponseInterceptor } from './core/interceptor/response.interceptor';
-import { CacheInterceptor } from './core/interceptor/cache.interceptor';
-import { HttpExceptionFilter } from './core/filter/http-exception.filter';
-import { ValidationFilter } from './core/filter/validation.filter';
+
+// imports
+import { ResponseInterceptor } from './core/interceptor';
+import { CacheInterceptor } from './core/interceptor'; 
+import { HttpExceptionFilter } from './core/filter';
+import { ValidationFilter } from './core/filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

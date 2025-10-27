@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import { JwtGuard } from 'src/auth/guard';
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/core/guard';
+import { GetUser } from 'src/core/decorator';
 import { NotesDto, UpdateNotesDto } from './dto';
 import type { User } from '@prisma/client';
 
