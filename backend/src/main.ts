@@ -4,6 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ResponseInterceptor } from './core/interceptor/response.interceptor';
 import { CacheInterceptor } from './core/interceptor/cache.interceptor';
+import { HttpExceptionFilter } from './core/filter/http-exception.filter';
+import { ValidationFilter } from './core/filter/validation.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +30,9 @@ async function bootstrap() {
 
   // use interceptors
   app.useGlobalInterceptors(new ResponseInterceptor(), new CacheInterceptor());
+
+  // use filters
+  app.useGlobalFilters(new HttpExceptionFilter(), new ValidationFilter());
 
   // the validationPipe enables the correct data flow by preventing unauthorized body sent
   // as well as cleaning the body sent. It also enforces type conversions, so it can convert
