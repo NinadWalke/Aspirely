@@ -34,14 +34,14 @@ export default function Login() {
       const { data } = await api.post("/auth/login", loginFormData);
 
       // Assume backend returns: { user, jwtToken }
-      const { user, jwtToken } = data;
-
+      const { user, accessToken  } = data.data;
+      
       // Store user + token in Zustand
-      loginToServerAndLocal(user, jwtToken);
+      loginToServerAndLocal(user, accessToken);
       navigate('/dashboard');
     } catch (err: any) {
       console.error("Login failed:", err);
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message.message || err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }

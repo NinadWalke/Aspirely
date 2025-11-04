@@ -4,12 +4,11 @@ import { useAuthState } from "../store";
 
 const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
-  const { checkAuth, isLoggedIn } = useAuthState();
+  const { isLoggedIn } = useAuthState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verify = async () => {
-      await checkAuth();
       if (!isLoggedIn()) {
         navigate("/login");
       } else {
@@ -17,7 +16,7 @@ const ProtectedRoute: React.FC = () => {
       }
     };
     verify();
-  }, [checkAuth, isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate]);
 
   if (loading) return <p>Loading...</p>;
 
