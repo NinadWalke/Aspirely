@@ -51,6 +51,7 @@ model User {
   profileImage String? // optional Cloudinary URL
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  refreshToken String?
 
   // Relations
   tasks          Task[]
