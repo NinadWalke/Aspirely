@@ -31,7 +31,7 @@ async function bootstrap() {
   });
 
   // use interceptors
-  app.useGlobalInterceptors(new ResponseInterceptor(), new CacheInterceptor());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   // use filters
   app.useGlobalFilters(new HttpExceptionFilter(), new ValidationFilter());

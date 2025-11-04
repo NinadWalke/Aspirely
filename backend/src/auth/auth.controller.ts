@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ForgotDto, LoginDto, ProfileDto, SignUpDto } from './dto';
 import { JwtGuard, RolesGuard } from 'src/core/guard';
 import { GetUser, Roles } from 'src/core/decorator';
+import type { Request, Response} from 'express';
 
 import type { User } from '@prisma/client';
+import { RefreshTokenGuard } from 'src/core/guard/refresh-token.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -17,12 +19,28 @@ export class AuthController {
     return { isAuth: false };
   }
   @Post('register')
-  signup(@Body() dto: SignUpDto) {
-    return this.authService.signUserUp(dto);
+  signup(@Body() dto: SignUpDto, @Res({passthrough: true}) res: Response) {
+    return this.authService.signUserUp(dto, res);
   }
   @Post('login')
-  async login(@Body() dto: LoginDto) {
-    return await this.authService.logUserIn(dto);
+  async login(@Body() dto: LoginDto, @Res({passthrough: true}) res: Response) {
+    return await this.authService.logUserIn(dto, res);
+  }
+  @UseGuards(RefreshTokenGuard)
+  @Post('logout')
+  @HttpCode(200)
+  logout(@GetUser() user: User, @Res({passthrough: true}) res: Response) {
+    return this.authService.logUserOut(user.id, res);
+  }
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh')
+  async refresh(@GetUser() user: User, @Res({passthrough: true}) res: Response) {
+    const userId = user.id;
+    const refreshToken = user.refreshToken;
+    const {accessToken, newRefreshToken} = await this.authService.refreshTokens(userId, refreshToken);
+    // set new refresh token cookie
+    res.cookie('refresh_token', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'strict'});
+    return {accessToken};
   }
   @UseGuards(JwtGuard)
   @Get('profile')
